@@ -5,12 +5,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Version;
+import javax.persistence.Table;
 import java.math.BigDecimal;
 
 /**
  * Product entity.
  */
 @Entity
+@Table(name="product")
 public class Product {
 
     @Id

@@ -1,7 +1,7 @@
 package com.ensat.controllers;
 
+import com.ensat.DAO.ProductDAO;
 import com.ensat.entities.Product;
-import com.ensat.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,12 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class ProductController {
 
-    private ProductService productService;
-
     @Autowired
-    public void setProductService(ProductService productService) {
-        this.productService = productService;
-    }
+    private ProductDAO productDAO;
 
     /**
      * List all products.
@@ -30,7 +26,7 @@ public class ProductController {
      */
     @RequestMapping(value = "/products", method = RequestMethod.GET)
     public String list(Model model) {
-        model.addAttribute("products", productService.listAllProducts());
+        model.addAttribute("products", productDAO.listAllProducts());
         System.out.println("Returning rpoducts:");
         return "products";
     }
@@ -44,14 +40,14 @@ public class ProductController {
      */
     @RequestMapping("product/{id}")
     public String showProduct(@PathVariable Integer id, Model model) {
-        model.addAttribute("product", productService.getProductById(id));
+        model.addAttribute("product", productDAO.getProductById(id));
         return "productshow";
     }
 
     // Afficher le formulaire de modification du Product
     @RequestMapping("product/edit/{id}")
     public String edit(@PathVariable Integer id, Model model) {
-        model.addAttribute("product", productService.getProductById(id));
+        model.addAttribute("product", productDAO.getProductById(id));
         return "productform";
     }
 
@@ -75,7 +71,10 @@ public class ProductController {
      */
     @RequestMapping(value = "product", method = RequestMethod.POST)
     public String saveProduct(Product product) {
-        productService.saveProduct(product);
+        if (productDAO.getProductById(product.getId()) != null)
+            productDAO.updateProduct(product);
+        else
+            productDAO.saveProduct(product);
         return "redirect:/product/" + product.getId();
     }
 
@@ -87,7 +86,7 @@ public class ProductController {
      */
     @RequestMapping("product/delete/{id}")
     public String delete(@PathVariable Integer id) {
-        productService.deleteProduct(id);
+        productDAO.deleteProduct(id);
         return "redirect:/products";
     }
 
