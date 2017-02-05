@@ -71,7 +71,7 @@ public class ProductController {
      */
     @RequestMapping(value = "product", method = RequestMethod.POST)
     public String saveProduct(Product product) {
-        if (productDAO.getProductById(product.getId()) != null)
+        if (product.getId() != null)
             productDAO.updateProduct(product);
         else
             productDAO.saveProduct(product);
