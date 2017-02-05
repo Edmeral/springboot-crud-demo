@@ -1,5 +1,6 @@
 package com.ensat;
 
+import com.ginf3.SpringBootWebApplication;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.web.WebAppConfiguration;
